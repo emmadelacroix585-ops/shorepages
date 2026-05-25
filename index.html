@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BiblioLit — Ma bibliothèque</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Merriweather:ital,wght@0,300;0,400;1,300&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <nav>
+    <div class="logo" onclick="showView('home')">Biblio<span>Lit</span></div>
+    <div class="nav-center">
+      <button class="nav-link active" id="nav-home" onclick="showView('home')">Bibliothèque</button>
+      <button class="nav-link" id="nav-create" onclick="showView('create')">Créer</button>
+    </div>
+    <div class="nav-right">
+      <button class="theme-toggle" onclick="toggleTheme()" title="Changer le thème">
+        <span id="theme-icon">☀️</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HOME -->
+  <div id="view-home" class="view active">
+    <div class="hero">
+      <h1>Votre bibliothèque</h1>
+      <p>Écrivez, uploadez et lisez à votre rythme.</p>
+    </div>
+    <div class="section-header">
+      <h2>Mes livres</h2>
+      <span class="count-badge" id="books-count">0 livre</span>
+    </div>
+    <div class="books-grid" id="books-grid"></div>
+  </div>
+
+  <!-- CREATE BOOK -->
+  <div id="view-create" class="view">
+    <div class="page-header">
+      <h1>Nouveau livre</h1>
+      <p>Remplissez les informations de base pour commencer.</p>
+    </div>
+    <div class="create-form-wrap">
+      <div class="form-group">
+        <label>Titre du livre <span class="required">*</span></label>
+        <input type="text" id="new-book-title" placeholder="Le titre de votre œuvre..." />
+      </div>
+      <div class="form-group">
+        <label>Auteur <span class="optional">(optionnel)</span></label>
+        <input type="text" id="new-book-author" placeholder="Votre nom ou pseudonyme..." />
+      </div>
+      <div class="form-group">
+        <label>Description <span class="optional">(optionnel)</span></label>
+        <textarea id="new-book-desc" placeholder="Résumé, synopsis, notes..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Emoji couverture</label>
+        <div class="emoji-picker">
+          <span class="emoji-preview" id="new-emoji-selected">📗</span>
+          <div class="emoji-options">
+            <span onclick="selectNewEmoji(this)">📗</span><span onclick="selectNewEmoji(this)">📘</span>
+            <span onclick="selectNewEmoji(this)">📕</span><span onclick="selectNewEmoji(this)">📙</span>
+            <span onclick="selectNewEmoji(this)">📒</span><span onclick="selectNewEmoji(this)">🗡️</span>
+            <span onclick="selectNewEmoji(this)">🧙</span><span onclick="selectNewEmoji(this)">🌙</span>
+            <span onclick="selectNewEmoji(this)">🔮</span><span onclick="selectNewEmoji(this)">🌊</span>
+            <span onclick="selectNewEmoji(this)">🏰</span><span onclick="selectNewEmoji(this)">❤️</span>
+            <span onclick="selectNewEmoji(this)">⚔️</span><span onclick="selectNewEmoji(this)">🐉</span>
+            <span onclick="selectNewEmoji(this)">🌹</span><span onclick="selectNewEmoji(this)">🕯️</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Couleur de couverture</label>
+        <div class="color-picker" id="new-color-picker">
+          <div class="color-dot selected" style="background:#c8a86b" data-color="#c8a86b" onclick="selectNewColor(this)"></div>
+          <div class="color-dot" style="background:#7c9e87" data-color="#7c9e87" onclick="selectNewColor(this)"></div>
+          <div class="color-dot" style="background:#7b8cad" data-color="#7b8cad" onclick="selectNewColor(this)"></div>
+          <div class="color-dot" style="background:#a87b7b" data-color="#a87b7b" onclick="selectNewColor(this)"></div>
+          <div class="color-dot" style="background:#9b7bab" data-color="#9b7bab" onclick="selectNewColor(this)"></div>
+          <div class="color-dot" style="background:#7baaa8" data-color="#7baaa8" onclick="selectNewColor(this)"></div>
+          <div class="color-dot" style="background:#8c8c7a" data-color="#8c8c7a" onclick="selectNewColor(this)"></div>
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="showView('home')">Annuler</button>
+        <button class="btn btn-primary" onclick="createBookFromForm()">✓ Créer le livre</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOOK DETAIL -->
+  <div id="view-book" class="view">
+    <div class="back-bar">
+      <button class="back-btn" onclick="showView('home')">← Bibliothèque</button>
+      <span id="breadcrumb-title"></span>
+    </div>
+    <div class="book-hero">
+      <div class="book-hero-cover" id="detail-cover"></div>
+      <div class="book-hero-info">
+        <h1 id="detail-title"></h1>
+        <div class="author" id="detail-author"></div>
+        <div class="desc" id="detail-desc"></div>
+        <div class="book-hero-actions">
+          <button class="btn btn-primary" onclick="goToAddChapter()">+ Ajouter un chapitre</button>
+          <button class="btn btn-ghost" onclick="startReading()">▶ Lire</button>
+          <button class="btn btn-danger" onclick="deleteCurrentBook()">🗑 Supprimer</button>
+        </div>
+      </div>
+    </div>
+    <div class="chapters-section">
+      <h3>Chapitres</h3>
+      <div class="chapter-list" id="chapter-list"></div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT CHAPTER -->
+  <div id="view-chapter-editor" class="view">
+    <div class="back-bar">
+      <button class="back-btn" onclick="showView('book')">← Retour au livre</button>
+      <span id="editor-breadcrumb"></span>
+    </div>
+    <div class="editor-wrap">
+      <div class="form-group">
+        <label>Titre du chapitre <span class="required">*</span></label>
+        <input type="text" id="chapter-title-input" placeholder="ex : Le voyage commence..." />
+      </div>
+
+      <!-- TOOLBAR -->
+      <div class="editor-toolbar">
+        <div class="toolbar-group">
+          <select id="font-family-select" onchange="applyFont()" title="Police">
+            <option value="'Police No1', 'Playfair Display', serif">Police No1</option>
+            <option value="'Lora', serif">Lora</option>
+            <option value="'EB Garamond', serif">Garamond</option>
+            <option value="'Merriweather', serif">Merriweather</option>
+            <option value="'Crimson Text', serif">Crimson</option>
+            <option value="'DM Sans', sans-serif">DM Sans</option>
+          </select>
+        </div>
+        <div class="toolbar-group">
+          <select id="font-size-select" onchange="applyFontSize()" title="Taille">
+            <option value="14px">14</option>
+            <option value="16px" selected>16</option>
+            <option value="18px">18</option>
+            <option value="20px">20</option>
+            <option value="24px">24</option>
+          </select>
+        </div>
+        <div class="toolbar-sep"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" onclick="execCmd('bold')" title="Gras"><b>G</b></button>
+          <button class="toolbar-btn" onclick="execCmd('italic')" title="Italique"><i>I</i></button>
+          <button class="toolbar-btn" onclick="execCmd('underline')" title="Souligné"><u>S</u></button>
+        </div>
+        <div class="toolbar-sep"></div>
+        <div class="toolbar-group">
+          <button class="toolbar-btn" onclick="execCmd('justifyLeft')" title="Gauche">⬅</button>
+          <button class="toolbar-btn" onclick="execCmd('justifyCenter')" title="Centre">☰</button>
+          <button class="toolbar-btn" onclick="execCmd('justifyRight')" title="Droite">➡</button>
+          <button class="toolbar-btn" onclick="execCmd('justifyFull')" title="Justifié">▤</button>
+        </div>
+        <div class="toolbar-sep"></div>
+        <div class="toolbar-group">
+          <label class="toolbar-btn file-btn" title="Importer .txt">
+            📂 .txt
+            <input type="file" accept=".txt" onchange="loadTxtFile(this)" style="display:none" />
+          </label>
+        </div>
+      </div>
+
+      <div id="chapter-editor"
+           contenteditable="true"
+           class="chapter-editor"
+           placeholder="Rédigez ou collez votre chapitre ici..."></div>
+
+      <div class="form-actions">
+        <button class="btn btn-ghost" onclick="showView('book')">Annuler</button>
+        <button class="btn btn-primary" onclick="saveChapter()">✓ Enregistrer le chapitre</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- READER -->
+  <div id="view-reader" class="view">
+    <div class="back-bar">
+      <button class="back-btn" onclick="showView('book')">← Retour au livre</button>
+      <div class="reader-controls">
+        <select id="reader-font-select" onchange="changeReaderFont()" title="Police de lecture">
+          <option value="'Police No1', 'Playfair Display', serif">Police No1</option>
+          <option value="'Lora', serif">Lora</option>
+          <option value="'EB Garamond', serif">Garamond</option>
+          <option value="'Merriweather', serif">Merriweather</option>
+          <option value="'Crimson Text', serif">Crimson</option>
+          <option value="'DM Sans', sans-serif">DM Sans</option>
+        </select>
+        <button class="font-btn" onclick="changeFontSize(-1)">A−</button>
+        <button class="font-btn" onclick="changeFontSize(1)">A+</button>
+      </div>
+    </div>
+    <div class="reader-wrap">
+      <div class="reader-header">
+        <div class="reader-book-title" id="reader-book-title"></div>
+        <div class="reader-chapter-title" id="reader-chapter-title"></div>
+      </div>
+      <div class="reader-body" id="reader-body"></div>
+      <div class="reader-nav">
+        <button class="reader-nav-btn" id="prev-chapter-btn" onclick="navigateChapter(-1)">← Précédent</button>
+        <span id="chapter-counter"></span>
+        <button class="reader-nav-btn" id="next-chapter-btn" onclick="navigateChapter(1)">Suivant →</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
