@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BiblioLit - Votre site de lecture</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&family=Roboto:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div id="auth-screen" class="screen active-screen">
+        <div class="auth-container">
+            <h1 class="logo">📚 BiblioLit</h1>
+            <p id="auth-message">Veuillez configurer votre mot de passe pour votre premier accès :</p>
+            <form id="auth-form">
+                <input type="password" id="auth-password" placeholder="Mot de passe" required>
+                <button type="submit" id="auth-submit-btn">Valider</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="main-interface" class="hidden">
+        <header>
+            <div class="nav-container">
+                <span class="logo" onclick="showSection('library')">📚 BiblioLit</span>
+                <nav>
+                    <button onclick="showSection('library')" class="nav-btn active" id="nav-library">📚 Bibliothèque</button>
+                    <button onclick="showSection('create-book')" class="nav-btn" id="nav-create">➕ Créer un livre</button>
+                    <button id="theme-toggle" class="icon-btn">☀️/🌙</button>
+                </nav>
+            </div>
+        </header>
+
+        <main class="container">
+            <section id="sec-library" class="app-section active">
+                <h2>Ma Bibliothèque</h2>
+                <div id="books-grid" class="books-grid">
+                    </div>
+            </section>
+
+            <section id="sec-book-details" class="app-section hidden">
+                <button onclick="showSection('library')" class="back-btn">← Retour à la bibliothèque</button>
+                <div class="book-header-detail">
+                    <h2 id="detail-book-title">Titre du livre</h2>
+                    <p id="detail-book-author" class="author">Par Auteur</p>
+                    <p id="detail-book-desc" class="description">Description...</p>
+                    <button id="btn-trigger-add-chap" class="btn-primary">➕ Ajouter un chapitre</button>
+                </div>
+                
+                <h3>Chapitres</h3>
+                <div id="chapters-list" class="chapters-list">
+                    </div>
+                <button id="btn-delete-book" class="btn-danger">Supprimer ce livre</button>
+            </section>
+
+            <section id="sec-create-book" class="app-section hidden">
+                <h2>Créer un nouveau livre</h2>
+                <form id="form-create-book" class="vertical-form">
+                    <label for="book-title">Titre du livre *</label>
+                    <input type="text" id="book-title" required placeholder="Ex: Les Chroniques du Web">
+
+                    <label for="book-author">Auteur</label>
+                    <input type="text" id="book-author" placeholder="Votre nom ou pseudonyme">
+
+                    <label for="book-desc">Description (Optionnelle)</label>
+                    <textarea id="book-desc" rows="4" placeholder="Résumé de votre histoire..."></textarea>
+
+                    <button type="submit" class="btn-success">💾 Sauvegarder le livre</button>
+                </form>
+            </section>
+
+            <section id="sec-add-chapter" class="app-section hidden">
+                <button id="btn-back-to-book" class="back-btn">← Retour au livre</button>
+                <h2>Ajouter un Chapitre</h2>
+                <form id="form-add-chapter" class="vertical-form">
+                    <label for="chap-title">Titre du chapitre *</label>
+                    <input type="text" id="chap-title" required placeholder="Ex: Chapitre 1 : Le Réveil">
+
+                    <label>Corps du chapitre *</label>
+                    <div class="editor-toolbar">
+                        <button type="button" onclick="formatText('bold')"><b>B</b></button>
+                        <button type="button" onclick="formatText('italic')"><i>I</i></button>
+                        <select id="editor-font" onchange="changeEditorFont()">
+                            <option value="Merriweather">Merriweather (Défaut Serif)</option>
+                            <option value="Roboto">Roboto (Sans-Serif)</option>
+                            <option value="Playfair Display">Playfair</option>
+                        </select>
+                    </div>
+                    
+                    <div id="chap-content" class="rich-editor" contenteditable="true" placeholder="Écrivez ou collez votre texte ici..."></div>
+
+                    <button type="submit" class="btn-success">🚀 Publier le chapitre</button>
+                </form>
+            </section>
+
+            <section id="sec-reader" class="app-section hidden">
+                <div class="reader-controls">
+                    <button id="reader-back-to-book" class="back-btn">← Sommaire</button>
+                    <div class="reader-actions">
+                        <button onclick="adjustFontSize(-2)">A-</button>
+                        <button onclick="adjustFontSize(2)">A+</button>
+                        <select id="reader-font-select" onchange="changeReaderFont()">
+                            <option value="Merriweather">Merriweather</option>
+                            <option value="Roboto">Roboto</option>
+                            <option value="Playfair Display">Playfair</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="reader-area" class="reader-area">
+                    <h1 id="reader-chap-title">Titre du Chapitre</h1>
+                    <hr>
+                    <div id="reader-content" class="reader-content">
+                        </div>
+                </div>
+
+                <div class="reader-nav-buttons">
+                    <button id="btn-prev-chap" class="nav-btn-nav">Chapitre Précédent</button>
+                    <button id="btn-next-chap" class="nav-btn-nav">Chapitre Suivant</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

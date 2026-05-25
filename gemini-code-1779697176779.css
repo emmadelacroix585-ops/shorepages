@@ -1,0 +1,96 @@
+/* VARIABLES DE THÈMES (Sombre par défaut) */
+[data-theme="dark"] {
+    --bg-color: #121212;
+    --surface-color: #1e1e1e;
+    --text-color: #e0e0e0;
+    --text-secondary: #aaaaaa;
+    --accent-color: #818cf8;
+    --border-color: #333333;
+    --btn-success: #10b981;
+    --btn-danger: #ef4444;
+}
+
+[data-theme="light"] {
+    --bg-color: #f9f9f9;
+    --surface-color: #ffffff;
+    --text-color: #1a1a1a;
+    --text-secondary: #666666;
+    --accent-color: #4f46e5;
+    --border-color: #e5e7eb;
+    --btn-success: #10b981;
+    --btn-danger: #ef4444;
+}
+
+/* GLOBAL */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+.container { max-width: 900px; margin: 0 auto; padding: 20px; }
+.hidden { display: none !important; }
+
+/* AUTH SCREEN */
+.screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; position: fixed; width: 100%; top: 0; left: 0; background: var(--bg-color); z-index: 999; }
+.auth-container { background: var(--surface-color); padding: 30px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; width: 100%; max-width: 400px; }
+.auth-container input { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-color); color: var(--text-color); font-size: 16px; }
+
+/* HEADER */
+header { background: var(--surface-color); border-bottom: 1px solid var(--border-color); position: sticky; top: 0; z-index: 100; }
+.nav-container { max-width: 900px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; }
+.logo { font-size: 1.5rem; font-weight: bold; cursor: pointer; }
+nav { display: flex; gap: 10px; align-items: center; }
+
+/* BOUTONS */
+button, .btn-primary, .btn-success, .btn-danger {
+    padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer; font-weight: 500; font-size: 14px; transition: opacity 0.2s;
+}
+button:hover { opacity: 0.9; }
+.nav-btn { background: transparent; color: var(--text-color); }
+.nav-btn.active { border-bottom: 2px solid var(--accent-color); border-radius: 0; }
+.btn-primary { background: var(--accent-color); color: white; }
+.btn-success { background: var(--btn-success); color: white; margin-top: 10px; }
+.btn-danger { background: var(--btn-danger); color: white; margin-top: 20px; }
+.back-btn { background: transparent; color: var(--accent-color); padding-left: 0; margin-bottom: 15px; display: inline-block; }
+.icon-btn { background: transparent; font-size: 1.2rem; }
+
+/* FORMULAIRES */
+.vertical-form { display: flex; flex-direction: column; gap: 10px; background: var(--surface-color); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); }
+.vertical-form input, .vertical-form textarea { padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; background: var(--bg-color); color: var(--text-color); font-size: 16px; }
+
+/* ÉDITEUR DE TEXTE RICHES */
+.editor-toolbar { background: var(--bg-color); border: 1px solid var(--border-color); border-bottom: none; padding: 8px; border-top-left-radius: 4px; border-top-right-radius: 4px; display: flex; gap: 5px; }
+.editor-toolbar button { padding: 4px 10px; background: var(--surface-color); color: var(--text-color); border: 1px solid var(--border-color); }
+.editor-toolbar select { padding: 4px; background: var(--surface-color); color: var(--text-color); border: 1px solid var(--border-color); }
+.rich-editor { min-height: 300px; background: var(--bg-color); border: 1px solid var(--border-color); border-bottom-left-radius: 4px; border-bottom-right-radius: 4px; padding: 15px; overflow-y: auto; outline: none; font-family: 'Merriweather', serif; line-height: 1.6; }
+.rich-editor[placeholder]:empty:before { content: attr(placeholder); color: var(--text-secondary); }
+
+/* BIBLIOTHÈQUE / LIVRES */
+.books-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin-top: 20px; }
+.book-card { background: var(--surface-color); border: 1px solid var(--border-color); padding: 20px; border-radius: 8px; cursor: pointer; transition: transform 0.2s; position: relative; }
+.book-card:hover { transform: translateY(-5px); }
+.book-card h3 { margin-bottom: 5px; }
+.author { font-size: 0.9rem; color: var(--text-secondary); font-style: italic; }
+.description { margin-top: 10px; font-size: 0.95rem; color: var(--text-color); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* CHAPITRES */
+.book-header-detail { background: var(--surface-color); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px; }
+.book-header-detail .description { -webkit-line-clamp: unset; display: block; margin-bottom: 15px; }
+.chapters-list { margin-top: 15px; background: var(--surface-color); border: 1px solid var(--border-color); border-radius: 8px; }
+.chapter-item { padding: 15px; border-bottom: 1px solid var(--border-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center; }
+.chapter-item:last-child { border-bottom: none; }
+.chapter-item:hover { background: var(--bg-color); }
+
+/* ZONE DE LECTURE (Style ScribbleHub) */
+.reader-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: var(--surface-color); padding: 10px; border-radius: 4px; }
+.reader-actions { display: flex; gap: 8px; }
+.reader-actions button { background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); }
+.reader-area { background: var(--surface-color); padding: 40px 30px; border-radius: 8px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+#reader-chap-title { text-align: center; margin-bottom: 20px; font-family: 'Roboto', sans-serif; }
+.reader-content { font-family: 'Merriweather', serif; font-size: 18px; line-height: 1.8; text-align: justify; }
+.reader-content p { margin-bottom: 1.5rem; }
+.reader-nav-buttons { display: flex; justify-content: space-between; margin-top: 20px; gap: 20px; }
+.nav-btn-nav { flex: 1; background: var(--accent-color); color: white; padding: 15px; text-align: center; font-size: 16px; }
+.nav-btn-nav:disabled { background: var(--border-color); color: var(--text-secondary); cursor: not-allowed; }
